@@ -53,3 +53,8 @@ app.get('/server', function (req, res) {
   res.send('SERVER - listening websocket on: ' + appEnv.url + " port " + port);
 
 });
+
+
+
+app.listen(appEnv.port, function () { console.log('Listening on ' + appEnv.url) });
+
