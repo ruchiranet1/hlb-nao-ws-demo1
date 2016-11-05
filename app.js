@@ -30,24 +30,29 @@ app.listen(appEnv.port, '0.0.0.0', function() {
 });*/
 
 
+ console.log("server: starting websocket server...pos1");
+
  //handler server 
 app.get('/server', function (req, res) {
 
   //test websocket
-  console.log("server: starting websocket server...");
+  console.log("server: starting websocket server...pos2");
 
+  var Server = require('ws').Server;
   var port = (process.env.PORT || 8888); 
-
-  var WebSocketServer = require('ws').Server;
-
-  var wss = new WebSocketServer({port: port});
-  wss.on('connection', function(ws) {
-      ws.on('message', function(message) {
-          console.log('server: received: %s', message);
-          ws.send('echo: ' + message);
-      });
-      ws.send('connected');
+  var ws = new Server({port: port});
+ 
+  ws.on('connection', function(w){
+  
+  w.on('message', function(msg){
+    console.log('message from client');
   });
+  
+  w.on('close', function() {
+    console.log('closing connection');
+  });
+
+});
 
   console.log("server: listening  websocket on " + appEnv.url + " - port " + port );
   res.send('SERVER - listening websocket on: ' + appEnv.url + " port " + port);
@@ -56,5 +61,8 @@ app.get('/server', function (req, res) {
 
 
 
-app.listen(appEnv.port, function () { console.log('Listening on ' + appEnv.url) });
+app.listen(appEnv.port, '0.0.0.0', function() {
+  // print a message when the server starts listening
+  console.log("server starting on " + appEnv.url);
+});
 
